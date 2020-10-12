@@ -14,3 +14,4 @@ class Address {
     private val homeNumber: Long? = null
     private val flatNumber: Long? = null
 }
+
