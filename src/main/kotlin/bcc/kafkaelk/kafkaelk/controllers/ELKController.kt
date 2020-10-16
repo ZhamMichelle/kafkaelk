@@ -6,13 +6,12 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpEntity
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.client.RestTemplate
 import java.io.PrintWriter
 import java.io.StringWriter
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import java.util.*
 import java.util.logging.Level
 
@@ -55,17 +54,38 @@ internal class ELKController {
         return response
     }
 
-    @RequestMapping(value = ["/test"])
+    @PostMapping("test")
     fun test(){
       try{
         val restTemplate=RestTemplate()
         val headers=HttpHeaders()
         headers.setAll(mapOf("content-type" to "application/json"))
-        val newRequest  = Test(msgId = 1, msg="Kygo")
+        val newRequest  = Test(msgId = 2, msg="Imagine Dragons")
         val requestBode: HttpEntity<Any> = HttpEntity<Any>(newRequest, headers)
-        val result: ResponseEntity<Any> = restTemplate.postForEntity("http://localhost:9600", requestBode, Any::class.java)
+        val result: ResponseEntity<Any> = restTemplate.postForEntity("http://localhost:5555", requestBode, Any::class.java)
       }catch (e:java.lang.Exception){
           LOG.error(e.toString())
       }
       }
+
+    @GetMapping("test2")
+    fun test2(): Any{
+        try{
+            val restTemplate=RestTemplate()
+            val headers=HttpHeaders()
+            headers.setAll(mapOf("content-type" to "application/json"))
+            val newRequest  = Test(msgId = 2, msg="Imagine Dragons")
+            val requestBody: HttpEntity<Any> = HttpEntity<Any>(newRequest, headers)
+            val result: ResponseEntity<Any> = restTemplate.postForEntity("http://localhost:8080/elk/urlTest", requestBody, Any::class.java)
+        return result
+        }catch (e:java.lang.Exception){
+            LOG.error(e.toString())
+            return "error"
+        }
+    }
+
+    @PostMapping("urlTest")
+    fun urlTest(@RequestBody test: Test ) : Test{
+            return test
+    }
 }
