@@ -15,8 +15,22 @@ class SimpleKafkaExampleApplication {
 //        println(msg)
 //    }
 
+    @KafkaListener(topics = ["history"])
+    fun historyListener(record: ConsumerRecord<Long?, Any?>) {
+        println(record.partition())
+        println(record.key())
+        System.out.println(record.value())
+    }
+
+    @KafkaListener(topics = ["activity"])
+    fun activityListener(record: ConsumerRecord<Long?, Any?>) {
+        println(record.partition())
+        println(record.key())
+        System.out.println(record.value())
+    }
+
     @KafkaListener(topics = ["msg"])
-    fun orderListener(record: ConsumerRecord<Long?, Any?>) {
+    fun msgListener(record: ConsumerRecord<Long?, Any?>) {
         println(record.partition())
         println(record.key())
         System.out.println(record.value())
