@@ -42,4 +42,5 @@ class KafkaConsumerConfig {
     fun consumerFactory(): ConsumerFactory<Long, Any> {
         return DefaultKafkaConsumerFactory<Long, Any>(consumerConfigs())
     }
+
 }
